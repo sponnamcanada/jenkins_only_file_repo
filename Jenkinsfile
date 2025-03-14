@@ -62,9 +62,10 @@ pipeline {
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
                     traceLevel: 'None'  // Trace level can be adjusted as per your requirement
                 )
+                 echo "${projectJsonPath}"
+                echo "UiPath Pack completed"
             }
-             echo "${projectJsonPath}"
-             echo "UiPath Pack completed"
+            
         }
 
         stage('Deploy') {
