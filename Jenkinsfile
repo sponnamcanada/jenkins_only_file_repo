@@ -72,11 +72,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "entered to deployment after completing the creation of nupkg"
+                echo "${WORKSPACE}/Output/${BUILD_NUMBER}/new_jenkins_test.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg"
 
                 // UiPathDeploy step to deploy the package to UiPath Orchestrator
                 UiPathDeploy(
                     traceLevel: 'None',
-                    packagePath: "${outputPath}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
+                    packagePath: "${WORKSPACE}/Output/${BUILD_NUMBER}/new_jenkins_test.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
                     orchestratorAddress: "${UIPATH_ORCH_URL}",  // Orchestrator URL
                     orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", // Your Orchestrator Tenant Name
                     folderName: "${UIPATH_ORCH_FOLDER_NAME}",  // Folder name
