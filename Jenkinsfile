@@ -48,7 +48,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "Building the selected repository"
+                echo "Building the selected repository:  ${repoName}"
 
                 // Add the echo for the workspace path
                 echo "Building with workspace: ${WORKSPACE}"
@@ -56,7 +56,7 @@ pipeline {
                 // UiPathPack build step
                 UiPathPack(
                     outputPath: "${WORKSPACE}/Output/${BUILD_NUMBER}",  // Use BUILD_NUMBER as output directory
-                    projectJsonPath: "project.json",  // Path to the project.json file
+                    //projectJsonPath: "project.json",  // Path to the project.json file
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${BUILD_NUMBER}"],  // Dynamic versioning
                     useOrchestrator: false,  // Set to true if you want to use Orchestrator
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
@@ -72,7 +72,7 @@ pipeline {
                 // UiPathDeploy step to deploy the package to UiPath Orchestrator
                 UiPathDeploy(
                     traceLevel: 'None',
-                    packagePath: "${WORKSPACE}/Output/${BUILD_NUMBER}/${repoName}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
+                    packagePath: "${outputPath}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
                     orchestratorAddress: "${UIPATH_ORCH_URL}",  // Orchestrator URL
                     orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", // Your Orchestrator Tenant Name
                     folderName: "${UIPATH_ORCH_FOLDER_NAME}",  // Folder name
