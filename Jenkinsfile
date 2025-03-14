@@ -11,7 +11,7 @@ pipeline {
         // Set versioning components
         MAJOR = '1'  // Major version can be static or dynamic
         MINOR = '0'  // Minor version can be static or dynamic
-        BUILD_NUMBER = 'env.BUILD_NUMBER'  // Build number is dynamic and provided by Jenkins
+        BUILD_NUMBER = '${env.BUILD_NUMBER}'  // Build number is dynamic and provided by Jenkins
 
         // Orchestrator Services (configure these as per your project setup)
         UIPATH_ORCH_URL = "https://cloud.uipath.com"
