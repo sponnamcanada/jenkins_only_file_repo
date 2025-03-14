@@ -56,13 +56,15 @@ pipeline {
                 // UiPathPack build step
                 UiPathPack(
                     outputPath: "${WORKSPACE}/Output/${BUILD_NUMBER}",  // Use BUILD_NUMBER as output directory
-                    projectJsonPath: "${WORKSPACE}/project.json",  // Path to the project.json file
+                    projectJsonPath: "${outputPath}/project.json",  // Path to the project.json file
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${BUILD_NUMBER}"],  // Dynamic versioning
                     useOrchestrator: false,  // Set to true if you want to use Orchestrator
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
                     traceLevel: 'None'  // Trace level can be adjusted as per your requirement
                 )
             }
+             echo "${projectJsonPath}"
+             echo "UiPath Pack completed"
         }
 
         stage('Deploy') {
