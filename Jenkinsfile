@@ -8,11 +8,12 @@ pipeline {
     }
 
     environment {
-        // Versioning info
-        MAJOR = '1'
-        MINOR = '0'
-        
-        // Orchestrator Services
+        // Set versioning components
+        MAJOR = '1'  // Major version can be static or dynamic
+        MINOR = '0'  // Minor version can be static or dynamic
+        BUILD_NUMBER = env.BUILD_NUMBER  // Build number is dynamic and provided by Jenkins
+
+        // Orchestrator Services (configure these as per your project setup)
         UIPATH_ORCH_URL = "https://cloud.uipath.com"
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
@@ -54,12 +55,31 @@ pipeline {
 
                 // UiPathPack build step
                 UiPathPack(
-                    outputPath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}",  // Use WORKSPACE as the output directory
+                    outputPath: "${WORKSPACE}/Output/${BUILD_NUMBER}",  // Use BUILD_NUMBER as output directory
                     projectJsonPath: "project.json",  // Path to the project.json file
-                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],  // Dynamic versioning
+                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${BUILD_NUMBER}"],  // Dynamic versioning
                     useOrchestrator: false,  // Set to true if you want to use Orchestrator
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
                     traceLevel: 'None'  // Trace level can be adjusted as per your requirement
+                )
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "entered to deployment after completing the creation of nupkg"
+
+                // UiPathDeploy step to deploy the package to UiPath Orchestrator
+                UiPathDeploy(
+                    traceLevel: 'Info',
+                    packagePath: "${WORKSPACE}/Output/${BUILD_NUMBER}/${repoName}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
+                    orchestratorUrl: "${UIPATH_ORCH_URL}",  // Orchestrator URL
+                    tenantName: "${UIPATH_ORCH_TENANT_NAME}",  // Tenant name
+                    folderName: "${UIPATH_ORCH_FOLDER_NAME}",  // Folder name
+                    logicalName: "${UIPATH_ORCH_LOGICAL_NAME}",  // Logical name of Orchestrator
+                    createProcess: false,
+                    entryPointPaths: '',
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']  // Credentials
                 )
             }
         }
