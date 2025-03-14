@@ -1,9 +1,10 @@
 pipeline {
     agent any
 
-    // Declare variables outside the environment block
-    environment {
-        BRANCH = 'main' // Example default value for the branch
+    // Define parameters for repository and branch
+    parameters {
+        choice(name: 'REPO_NAME', choices: ['rpa_uipath_test', 'new_jenkins_test', 'uipathjenkins'], description: 'Select the repository to build')
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Branch to build (default: main)')
     }
 
     stages {
@@ -17,10 +18,9 @@ pipeline {
                         'uipathjenkins': 'https://github.com/sponnamcanada/uipathjenkins.git'
                     ]
 
-                    // Get the repository name from the Git URL
-                    def repoName = env.GIT_URL?.split('/')[-1]?.replace('.git', '')
-
-                    echo "Repository detected: ${repoName}"
+                    // Get the selected repository name from the parameter
+                    def repoName = params.REPO_NAME
+                    echo "Repository selected: ${repoName}"
 
                     // Check if the repository is one of the valid choices and perform the checkout
                     if (repoName && REPO_URLS.containsKey(repoName)) {
