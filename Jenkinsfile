@@ -42,6 +42,7 @@ pipeline {
                     } else {
                         error "Repository ${repoName} not recognized"
                     }
+                    echo "Building the selected repository:  ${repoName}"
                 }
             }
         }
