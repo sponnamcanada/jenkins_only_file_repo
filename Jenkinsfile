@@ -71,7 +71,7 @@ pipeline {
 
                 // UiPathDeploy step to deploy the package to UiPath Orchestrator
                 UiPathDeploy(
-                    traceLevel: 'Info',
+                    traceLevel: 'None',
                     packagePath: "${WORKSPACE}/Output/${BUILD_NUMBER}/${repoName}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
                     orchestratorUrl: "${UIPATH_ORCH_URL}",  // Orchestrator URL
                     tenantName: "${UIPATH_ORCH_TENANT_NAME}",  // Tenant name
