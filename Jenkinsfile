@@ -60,7 +60,7 @@ pipeline {
                     projectJsonPath: "S:\\jenkins workspace\\workspace\\new_jenkins_test\\project.json",  // Path to the project.json file
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${BUILD_NUMBER}"],  // Dynamic versioning
                     useOrchestrator: false,  // Set to true if you want to use Orchestrator
-                    credentials: [$class: 'SecretTextBinding', credentialsId: 'APIUserKey'],  // Provide API credentials
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
                     traceLevel: 'None'  // Trace level can be adjusted as per your requirement
                 )
                  //echo "${projectJsonPath}"
@@ -84,7 +84,7 @@ pipeline {
                     createProcess: false,
                     environments:'',
                     entryPointPaths: '',
-                    credentials: [$class: 'SecretTextBinding', credentialsId: 'APIUserKey']  // Credentials
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']  // Credentials
                 )
             }
         }
