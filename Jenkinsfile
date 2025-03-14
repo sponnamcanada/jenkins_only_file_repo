@@ -75,9 +75,7 @@ pipeline {
                     packagePath: "${WORKSPACE}/Output/${BUILD_NUMBER}/${repoName}.${MAJOR}.${MINOR}.${BUILD_NUMBER}.nupkg",  // Use the dynamically generated package path
                     orchestratorAddress: "${UIPATH_ORCH_URL}",  // Orchestrator URL
                     orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", // Your Orchestrator Tenant Name
-                    orchestratorLogicalName: "cloud_siva_ponnam", 
                     folderName: "${UIPATH_ORCH_FOLDER_NAME}",  // Folder name
-                    logicalName: "${UIPATH_ORCH_LOGICAL_NAME}",  // Logical name of Orchestrator
                     createProcess: false,
                     entryPointPaths: '',
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']  // Credentials
