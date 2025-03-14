@@ -77,6 +77,7 @@ pipeline {
                     orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", // Your Orchestrator Tenant Name
                     folderName: "${UIPATH_ORCH_FOLDER_NAME}",  // Folder name
                     createProcess: false,
+                    environments:'',
                     entryPointPaths: '',
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']  // Credentials
                 )
