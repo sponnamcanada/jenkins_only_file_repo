@@ -49,7 +49,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "Building the selected repository:  ${repoName}"
+                echo "Building the selected repository"
 
                 // Add the echo for the workspace path
                 echo "Building with workspace: ${WORKSPACE}"
