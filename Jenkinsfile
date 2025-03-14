@@ -36,7 +36,19 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building the selected repository"
-                // Add your build steps here (e.g., compile, test, etc.)
+
+                // Add the echo for the workspace path
+                echo "Building with workspace: ${WORKSPACE}"
+
+                // UiPathPack build step
+                UiPathPack(
+                    outputPath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}",
+                    projectJsonPath: "project.json",
+                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
+                    useOrchestrator: false,
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
+                    traceLevel: 'None'
+                )
             }
         }
 
