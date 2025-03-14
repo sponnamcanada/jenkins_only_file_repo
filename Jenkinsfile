@@ -7,6 +7,18 @@ pipeline {
         string(name: 'BRANCH', defaultValue: 'main', description: 'Branch to build (default: main)')
     }
 
+    environment {
+        // Versioning info
+        MAJOR = '1'
+        MINOR = '0'
+        
+        // Orchestrator Services
+        UIPATH_ORCH_URL = "https://cloud.uipath.com"
+        UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
+        UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
+        UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -42,12 +54,12 @@ pipeline {
 
                 // UiPathPack build step
                 UiPathPack(
-                    outputPath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}",
-                    projectJsonPath: "project.json",
-                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
-                    useOrchestrator: false,
-                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
-                    traceLevel: 'None'
+                    outputPath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}",  // Use WORKSPACE as the output directory
+                    projectJsonPath: "project.json",  // Path to the project.json file
+                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],  // Dynamic versioning
+                    useOrchestrator: false,  // Set to true if you want to use Orchestrator
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],  // Provide API credentials
+                    traceLevel: 'None'  // Trace level can be adjusted as per your requirement
                 )
             }
         }
